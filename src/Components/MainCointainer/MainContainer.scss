@@ -1,0 +1,65 @@
+@import '../../css/variables';
+
+.main-container{
+  padding: 0 !important;
+  min-height: 70vh;
+  margin: 1em 0 3em 0;
+
+  .signed-in-view{
+    color: $primary;
+    img{
+      width: 40%;
+      height: 70%;
+    }
+  }
+
+  .line{
+    position: relative;
+    top: 5vh;
+    left: 0;
+    width: 21%;
+  }
+  .title{
+    padding: 0 0 0 2%;
+  }
+}
+
+@media screen and (max-width: 1700px){
+  .main-container{
+    padding: 0 !important;
+    min-height: 40vh;
+    margin: 1em 0 3em 0;
+
+    .line{
+      top:4vh;
+      width: 16%;
+    }
+    .title{
+      padding: 0 0 0 2%;
+    }
+  }
+}
+@media screen and (max-width: 1508px){
+  .main-container{
+
+    .line{
+      top:4vh;
+      width: 14%;
+    }
+    .title{
+      padding: 0 0 0 2%;
+    }
+  }
+}
+@media screen and (max-width: 1024px){
+  .main-container{
+
+    .line{
+      display: none;
+    }
+    .title{
+      padding: 0 0 0 2%;
+      color: $primary;
+    }
+  }
+}

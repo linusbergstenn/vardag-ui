@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="0c41d332-a3f5-436c-bb09-abc8fc5eabdd" name="VarDag" url="http://web13.anaxanet.com">
+        <fileTransfer host="web13.anaxanet.com" port="21" rootFolder="/altrankarlstad.com/wwwroot/vardag">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

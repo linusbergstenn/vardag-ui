@@ -1,0 +1,11 @@
+@import '../../css/variables';
+
+footer{
+    color: white;
+    min-height: 15vh;
+    background: $primary;
+
+    a{
+        color: white;
+    }
+}

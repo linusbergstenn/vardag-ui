@@ -1,0 +1,29 @@
+@import '../../css/variables';
+
+.navbar{
+  width: 100vw;
+  height: 10vh;
+  background: $primary;
+
+  .logo{
+    width: 15vw;
+  }
+  
+  .hamburger{
+    cursor: pointer;
+    color: white;
+    transition: color .4s ease-in-out;
+    &:hover{
+      color: rgba(#000, .6);
+    }
+  }
+  .md-menu{
+    padding: 0 !important;
+  }
+  .sign-out{
+    transition: color .3s ease-in-out;
+    &:hover{
+      color: rgba($alt2, .6);
+    }
+  }
+}
