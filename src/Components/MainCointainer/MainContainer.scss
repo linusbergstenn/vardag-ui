@@ -12,7 +12,9 @@
       height: 70%;
     }
   }
-
+  #user{
+    &:first-letter{text-transform: uppercase}
+  }
   .line{
     position: relative;
     top: 5vh;

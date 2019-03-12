@@ -13,7 +13,6 @@ const Navbar = (props) => {
     let signOut = props.signOut;
     let user = props.user;
     let show = false;
-    console.log('signOut user: ', user);
 
     let toggleMenu = () => {
             $('.md-menu').toggleClass('d-none').toggleClass('d-flex');
@@ -52,10 +51,10 @@ const Navbar = (props) => {
                         aria-controls="navbar-toggler" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon" />
                 </button>
-                <img className="navbar-brand logo d-none" src={Logo} />
+                <h4 className={'d-block d-md-none'}> {user.name} </h4>
 
                 <div className="collapse navbar-collapse bg-primary" id="navbar-toggler">
-                    <div className={' container-fluid d-flex justify-content-around'}>
+                    <div className={'container-fluid d-flex justify-content-around'}>
                         <ul className="navbar-nav mt-2 mt-lg-0 d-lg-block p-2">
                             <NavLink className={'pr-4 link'} to={'/Events'}>Händelser</NavLink>
                             <NavLink className={'pr-4 link'} to={'/Planner'}>Planera</NavLink>

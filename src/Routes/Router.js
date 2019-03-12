@@ -27,10 +27,9 @@ const Routes = (props) =>{
                             <Route exact path={'/'} component={() => <Home signedIn={signedIn} user={user}/>} />
                             <Route path={'/About'} component={() => <About signedIn={signedIn} user={user}/>} />
                             <Route path={'/Contact'} component={() => <Contact signedIn={signedIn} user={user}/>} />
-                            <Route path={'/LogIn'} component={() => <LogIn signedIn={signedIn} signIn={props.signIn} user={user}/>} />
+                            <Route path={'/LogIn'} component={() => <LogIn signedIn={signedIn} signIn={props.signIn} user={user} />} />
                             <Route path={'/Events'} component={ () => <Events signedIn={signedIn} user={user}/>} />
-                            <Route path={'/Planner'} component={ () => <Planner signedIn={signedIn} user={user}
-                                                                                pics={props.pics} />} />
+                            <Route path={'/Planner'} component={ () => <Planner signedIn={signedIn} user={user} />} />
                             <Route path={'/signedout'} component={ () => <LogOut signedIn={signedIn}/>} />
                             <Route component={NotFound} />
                         </Switch>

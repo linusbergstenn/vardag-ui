@@ -7,7 +7,7 @@ const AddModal = (props) => {
 
         await axios({
             method: 'post',
-            url: 'http://localhost:5000/activity/AddActivity',
+            url: 'http://www.altrankarlstad.com/vardag-api/activity/AddActivity',
             params: {
                 AccountId: props.user.userId,
                 ActivityName: document.getElementById('add_activity-name').value,
@@ -30,13 +30,38 @@ const AddModal = (props) => {
             }
         }).then((response) => {
             props.reloadActivities();
+               document.getElementById('add_activity-name').value = '';
+               document.getElementById('add_activity-description').value = '';
+
         }).catch((error) => {
             console.log('Error: ', error)
         });
 
 
     };
-    let aktivitet = props.activity;
+
+    let currHour = () => {
+        let hour = props.date.getHours();
+        let minute = props.date.getMinutes();
+        if(hour < 10)
+            hour = '0'+hour;
+        if(minute < 10)
+            minute = '0'+minute;
+
+        let string = `${hour}:${minute}`;
+        return string;
+    };
+    let nextHour = () => {
+        let hour = props.date.getHours() + 1;
+        let minute = props.date.getMinutes();
+        if(hour < 10)
+            hour = '0'+hour;
+        if(minute < 10)
+            minute = '0'+minute;
+
+        let string = `${hour}:${minute}`;
+        return string;
+    };
 
     let weekdayString = ['Mån', 'Tis', 'Ons', 'Tors', 'Fre', 'Lör', 'Sön'];
     let weekdays = weekdayString.map( (day, index) => {
@@ -93,16 +118,16 @@ const AddModal = (props) => {
                                 </div>
                                 <div className={'form-group'}>
                                     <label htmlFor="add_date">Datum för aktivitet: </label>
-                                    <input className={'form-control'} type={'date'} id={'add_date'} />
+                                    <input className={'form-control'} type={'date'} id={'add_date'} defaultValue={props.dateString()}/>
                                 </div>
                                 <div className={'form-group d-flex justify-content-around'}>
                                     <div>
                                         <label htmlFor="add_timeStart">Aktiviteten start: </label>
-                                        <input className={'form-control'} type={'time'} id={'add_timeStart'}/>
+                                        <input className={'form-control'} type={'time'} id={'add_timeStart'} defaultValue={currHour()}/>
                                     </div>
                                     <div>
                                         <label htmlFor="add_timeEnd">Aktiviteten slutar: </label>
-                                        <input className={'form-control'} type={'time'} id={'add_timeEnd'}/>
+                                        <input className={'form-control'} type={'time'} id={'add_timeEnd'} defaultValue={nextHour()}/>
                                     </div>
                                 </div>
                                 <div className={'form-group'}>

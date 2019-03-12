@@ -7,22 +7,28 @@ import $ from 'jquery';
 
 import PerfectScrollBar from 'react-perfect-scrollbar';
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faPhone, faEnvelope, faUserAlt, faPowerOff, faLock, faLockOpen, faScrewdriver, faXRay, faFingerprint, faBolt, faPencilAlt, faBars, faPlus, faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faPhone, faEnvelope, faUserAlt, faPowerOff, faLock, faLockOpen,
+    faScrewdriver, faXRay, faFingerprint, faBolt, faPencilAlt,
+    faBars, faPlus, faArrowRight, faArrowLeft, faCaretDown}
+    from '@fortawesome/free-solid-svg-icons';
 
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min';
-import 'react-perfect-scrollbar/dist/css/styles.min.css'
+import 'react-perfect-scrollbar/dist/css/styles.css'
 import './css/App.scss';
 import './css/animate.css';
 
 class App extends Component {
 
-    state = {
-        loggedIn: false,
-        user: {},
-        activities: []
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            loggedIn: false,
+            user: {}
+        };
+    }
+
 
     handleLogin = (name, id) => {
         console.log('handle login');
@@ -40,9 +46,7 @@ class App extends Component {
       this.setState({
           loggedIn: false
       });
-      console.log('loggedout user: ' ,user);
       alert(user.username + ' loggades ut!');
-
     };
 
 
@@ -54,22 +58,22 @@ class App extends Component {
                 'content-type': 'application/json',
             }
         };
-
+        $('.spinner-border').removeClass('d-none');
         await axios({
             method: 'post',
-            url: 'http://localhost:5000/auth/ValidateUser' /*'http://127.0.0.1:5000/auth/ValidateUser'*/,
+            url: 'http://www.altrankarlstad.com/vardag-api/auth/ValidateUser',
             params: {
                 username: user,
                 password: pass
             }
         }).then((response) => {
-            console.log('logged in usr: ', user, '\n response data:  ', response.data);
             this.handleLogin(user, response.data.AccountId);
         }).catch((error) => {
             console.log(error.response);
+            $('.spinner-border').addClass('d-none');
             if(error.response.status === 404) {
                 $('#fail-alert').removeClass('d-none');
-                $(passInput).val('');
+                passInput.value = '';
                 setTimeout( () => {
                     $('#fail-alert').addClass('d-none');
                 }, 2000)
@@ -86,18 +90,18 @@ class App extends Component {
 
     let quickSign = (event) => {
         if(event.code === 'Backslash' && this.state.loggedIn === false){
-            this.login('Joar', 'joar');
+            this.login('Linus', 'linus');
         }
     };
 
-    library.add(faEnvelope, faPhone, faUserAlt, faPowerOff, faLock, faLockOpen, faScrewdriver, faXRay, faFingerprint, faBolt, faPencilAlt, faBars, faPlus, faArrowRight, faArrowLeft);
+    library.add(faEnvelope, faPhone, faUserAlt, faPowerOff, faLock, faLockOpen, faScrewdriver,
+        faXRay, faFingerprint, faBolt, faPencilAlt, faBars, faPlus, faArrowRight, faArrowLeft, faCaretDown);
     window.addEventListener('keypress', quickSign);
     return(
         <div className={'App'}>
           <div className={'scroll-container'}>
             <PerfectScrollBar>
-              <Router state={this.state}
-                      pics={this.pictures}
+              <Router state={this.state} url={this.url}
                       signIn={(...args) => this.login(...args)}
                       signOut={(...args) => this.logOut(...args)}/>
             </PerfectScrollBar>

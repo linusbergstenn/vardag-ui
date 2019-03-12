@@ -3,12 +3,13 @@
 .navbar{
   width: 100vw;
   height: 10vh;
+  z-index: 2;
   background: $primary;
 
   .logo{
     width: 15vw;
   }
-  
+
   .hamburger{
     cursor: pointer;
     color: white;

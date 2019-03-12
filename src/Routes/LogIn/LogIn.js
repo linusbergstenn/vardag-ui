@@ -14,7 +14,7 @@ const LogIn = (props) => {
         e.preventDefault();
         let user = document.getElementById('ValidateUser').value;
         let pass = document.getElementById('ValidatePassword').value;
-        await props.signIn(user, pass, document.getElementById('validatePassword'));
+        await props.signIn(user, pass, document.getElementById('ValidatePassword'));
     };
     if(props.signedIn !== true){
         return(
@@ -38,6 +38,9 @@ const LogIn = (props) => {
                             </div>
                             <div className={'d-none alert alert-danger p-3 mt-2 animated shake'} id={'fail-alert'} role={'alert'}>
                                 FEL ANVÄNDARNAMN ELLER LÖSENORD
+                            </div>
+                            <div className="spinner-border text-info d-none" role="status">
+                                <span className="sr-only">Loading...</span>
                             </div>
                         </form>
                         <div className={'d-none d-lg-inline'} id={'right-content'}>

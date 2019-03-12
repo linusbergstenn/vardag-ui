@@ -4,7 +4,7 @@ import React from 'react';
 
 import './EditModal.scss';
 import axios from "axios";
-import $ from "jquery";
+
 const EditModal = (props) => {
     console.log('Modal props', props);
     let deleteActivity = async () => {
@@ -13,24 +13,23 @@ const EditModal = (props) => {
      if(cnfrm){
          await  axios({
              method: 'post',
-             url: 'http://localhost:5000/activity/DeleteActivity',
+             url: 'http://www.altrankarlstad.com/vardag-api/activity/DeleteActivity',
              params: {
                  id: props.activity.ActivityId
              }
          }).then((response) => {
-             console.log('data: ', response.data);
              props.reloadActivities();
          }).catch((error) => {
-             console.log('Error: ', error)
+             console.warn('Error: ', error)
          });
-     };
+     }
 
     };
     let updateActivity = async () => {
 
         await axios({
             method: 'post',
-            url: 'http://localhost:5000/activity/EditActivity',
+            url: 'http://www.altrankarlstad.com/vardag-api/activity/EditActivity',
             params: {
                     ActivityId: props.activity.ActivityId,
                     ActivityName: document.getElementById('activity-name').value || props.activity.Name,
@@ -52,7 +51,6 @@ const EditModal = (props) => {
                     Repeat: props.activity.Repeat
             }
         }).then((response) => {
-            console.log('data: ', response.data);
             props.reloadActivities();
         }).catch((error) => {
             console.log('Error: ', error)
@@ -61,21 +59,33 @@ const EditModal = (props) => {
 
     };
     let aktivitet = props.activity;
+    let acDate = new Date(aktivitet.Date);
+    let getDateString = () => {
+        let year = acDate.getUTCFullYear();
+        let month = acDate.getUTCMonth() + 1;
+        let day = acDate.getUTCDate();
 
+        if (month < 10)
+            month = '0' + month;
+        if (day < 10)
+            day = '0' + day;
+        let dateString = `${year}-${month}-${day}`;
+        return dateString;
+    }
     let weekdayString = ['Mån', 'Tis', 'Ons', 'Tors', 'Fre', 'Lör', 'Sön'];
     let weekdays = weekdayString.map( (day, index) => {
         let weekday = [aktivitet.Monday, aktivitet.Tuesday, aktivitet.Wednesday, aktivitet.Thursday, aktivitet.Friday, aktivitet.Saturday, aktivitet.Sunday];
-        if(weekday[index] !== true){
+        if(weekday[index] === true){
             return(
                 <div key={index} className="custom-control custom-checkbox custom-control-inline">
-                    <input className="custom-control-input" type="checkbox" id={"optionBox" + index} />
+                    <input className="custom-control-input" type="checkbox" id={"optionBox" + index} defaultChecked/>
                     <label className="custom-control-label" htmlFor={"optionBox" + index}>{day}</label>
                 </div>
             );
         }else{
             return(
                 <div key={index} className="custom-control custom-checkbox custom-control-inline">
-                    <input className="custom-control-input" type="checkbox" id={"optionBox" + index} defaultChecked/>
+                    <input className="custom-control-input" type="checkbox" id={"optionBox" + index} />
                     <label className="custom-control-label" htmlFor={"optionBox" + index}>{day}</label>
                 </div>
             );
@@ -96,7 +106,7 @@ const EditModal = (props) => {
         }else{
             return(
                 <div key={index} className="custom-control custom-checkbox custom-control-inline">
-                    <input className="custom-control-input" type="checkbox" id={"permBox" + index} checked/>
+                    <input className="custom-control-input" type="checkbox" id={"permBox" + index} defaultChecked/>
                     <label className="custom-control-label" htmlFor={"permBox" + index}>{permLevel}</label>
                 </div>
             );
@@ -141,7 +151,7 @@ if(props.activity !== null || props.activity !== undefined){
                             </div>
                             <div className={'form-group'}>
                                 <label htmlFor="date">Datum för aktivitet: </label>
-                                <input className={'form-control'} type={'date'} id={'date'} placeholder={aktivitet.Date} />
+                                <input className={'form-control'} type={'date'} id={'date'} defaultValue={getDateString} />
                             </div>
                             <div className={'form-group d-flex justify-content-around'}>
                                 <div>

@@ -10,8 +10,6 @@ const MainContainer = (props) => {
     let signedIn = props.signedIn;
     let user = props.user;
 
-    console.log(user);
-
 
 
     if(signedIn === false){
@@ -25,9 +23,9 @@ const MainContainer = (props) => {
     }else{
         return(
             <main className={'main-container container-fluid'}>
-                <div className={'container d-flex justify-content-between signed-in-view'}>
+                <div className={'container d-none d-md-flex justify-content-between signed-in-view'}>
                     <img src={Logo} />
-                    <h1 className={'align-self-center'}>{user.username || 'Användare'}</h1>
+                    <h1 id={'user'} className={'align-self-center'}>{user.username || 'Användare'}</h1>
                 </div>
                 <img src={Line}
                      className={'line'}/>
