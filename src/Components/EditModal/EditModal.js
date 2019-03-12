@@ -13,7 +13,7 @@ const EditModal = (props) => {
      if(cnfrm){
          await  axios({
              method: 'post',
-             url: 'http://www.altrankarlstad.com/vardag-api/activity/DeleteActivity',
+             url: 'http://www.altrankarlstad.com/vardag-api/DeleteActivity',
              params: {
                  id: props.activity.ActivityId
              }
@@ -25,6 +25,22 @@ const EditModal = (props) => {
      }
 
     };
+    let addImage = async (imgInp) => {
+
+        await axios({
+            method: 'post',
+            url: 'http://www.altrankarlstad.com/vardag-api/image/HandleImage',
+            params: {
+                name: imgInp.toString(),
+                activityid: props.activity.ActivityId,
+                accountid: props.activity.AccountId
+            }
+        }).then((response) => {
+            console.log('Image response: ', response.data);
+        }).catch((error) => {
+            console.log(error.response.statusText);
+        });
+    }
     let updateActivity = async () => {
 
         await axios({
@@ -51,6 +67,8 @@ const EditModal = (props) => {
                     Repeat: props.activity.Repeat
             }
         }).then((response) => {
+            console.log('imageInput: ', document.getElementById('imageInput').value);
+            //addImage(document.getElementById('imageInput').value);
             props.reloadActivities();
         }).catch((error) => {
             console.log('Error: ', error)
@@ -144,6 +162,12 @@ if(props.activity !== null || props.activity !== undefined){
                             <div className={'form-group'}>
                                 <label htmlFor={'activity-name'}>Namn på aktivitet:</label>
                                 <input id={'activity-name'} placeholder={aktivitet.Name} type={'text'} className={'form-control'}/>
+                            </div>
+                            <div className="input-group">
+                                <div className="custom-file">
+                                    <input type="file" className="custom-file-input" id="imageInput" accept="image/*"/>
+                                        <label className="custom-file-label" htmlFor="imageInput">Välj bild:</label>
+                                </div>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="activity-description">Beskrivning</label>
