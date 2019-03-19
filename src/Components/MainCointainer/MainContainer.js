@@ -9,12 +9,15 @@ import './MainContainer.scss';
 const MainContainer = (props) => {
     let signedIn = props.signedIn;
     let user = props.user;
+    let style;
 
-
+    if(props.style !== null || props.style !== undefined){
+        style = props.style;
+    }
 
     if(signedIn === false){
         return(
-            <main className={'main-container container-fluid'}>
+            <main style={style}  className={'main-container container-fluid'}>
                 <img src={Line}
                      className={'line'}/>
                 {props.children}
@@ -22,8 +25,8 @@ const MainContainer = (props) => {
         );
     }else{
         return(
-            <main className={'main-container container-fluid'}>
-                <div className={'container d-none d-md-flex justify-content-between signed-in-view'}>
+            <main style={style} className={'main-container container-fluid'}>
+                <div className={'container d-none d-lg-flex justify-content-between signed-in-view'}>
                     <img src={Logo} />
                     <h1 id={'user'} className={'align-self-center'}>{user.username || 'Användare'}</h1>
                 </div>

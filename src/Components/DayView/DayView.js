@@ -4,17 +4,21 @@ import { FontAwesomeIcon }  from '@fortawesome/react-fontawesome';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
 import './DayView.scss'
+import axios from "axios";
 const DayView = (props) => {
     let date = props.date;
     let activities = props.activities;
     let weekdayString = ['Mån', 'Tis', 'Ons', 'Tors', 'Fre', 'Lör', 'Sön'];
     let todaysActivities = [];
+    let activityImage;
 
     console.log('activities recieved in dayview: ', activities);
 
 
-    let getImage = (a) => {
+    let getImage = async (a) => {
       console.log('Aktivitet ' + a.Name + ' har ett bildId:', a.ImageId);
+      activityImage = 'http://localhost:5000/image/GetImage?id=' + a.ImageId;
+
     };
 
 
@@ -48,10 +52,20 @@ const DayView = (props) => {
         let energyArray = [];
         let maxEnergy = 10;
         let energy = activity.energy;
-
+        let actImage;
 
         if(activity.ImageId !== null){
-            getImage(activity)
+            getImage(activity);
+             actImage = () =>{
+                return(
+                    <div style={{width: 250 +'px', height: 250 +'px', padding: .1 + 'em',
+                        marginBottom: .5 + 'em', display: 'grid', placeItems: 'center', overflow: 'hidden'}} className={'border bg bg-light align-self-md-center'}>
+                    <img src={activityImage} alt={'Activity image'} className={'img-fluid'}/>
+                    </div>
+                )
+            }
+        }else{
+             actImage = () => {return null};
         }
 
         let modalContent = (activity) => {
@@ -72,7 +86,7 @@ const DayView = (props) => {
 
 
             return(
-                <div key={index} className={'p-3 ' + classname}>
+                <div key={index} className={'p-md-3 ' + classname}>
                     {e}
                 </div>
             );
@@ -95,7 +109,6 @@ const DayView = (props) => {
                 </div>
             );
         });
-        let loremPicsum = 'https://picsum.photos/300/200/?random';
 
         let subactivities = subActivitiesArray.map( (sub, index) => {
             let energy = sub.energy;
@@ -109,7 +122,7 @@ const DayView = (props) => {
 
 
                 return(
-                    <div key={index} className={' ' + classname}>
+                    <div key={index} className={'p-1 ' + classname}>
                         {e}
                     </div>
                 );
@@ -123,8 +136,7 @@ const DayView = (props) => {
                                              data-toggle={'modal'} data-target={'#edit-content-modal'} className={'edit-icon'} icon={'pencil-alt'}/>
                         </div>
                         <p> {sub.Description}</p>
-
-                        <div className={'d-flex justify-content-between'}>
+                        <div className={'d-flex justify-content-between flex-wrap'}>
                             {subEnergyAmount}
                         </div>
                     </div>
@@ -134,24 +146,27 @@ const DayView = (props) => {
         return(
             <div key={index} className={'container p-3 card mt-1 mb-2 mx-auto'}>
                <div className={'card-body'}>
-                   <h4>{activity.Name}</h4>
-                   <div className={'container-fluid fa-2x'}>
-                       <FontAwesomeIcon onClick={() => modalContent(activity)}
-                                        data-toggle={'modal'} data-target={'#edit-content-modal'} className={'edit-icon'} icon={'pencil-alt'}/>
+                   <div className={'d-flex justify-content-between mb-2 border-bottom align-items-center'}>
+                       <h4 style={{flex: '1 1 100%'}}>{activity.Name}</h4>
+                       <div className={'container-fluid fa-2x'}>
+                           <FontAwesomeIcon onClick={() => modalContent(activity)}
+                                            data-toggle={'modal'} data-target={'#edit-content-modal'} className={'edit-icon'} icon={'pencil-alt'}/>
+                       </div>
                    </div>
-                   <div className={'container-fluid description-container d-flex flex-column flex-md-row justify-content-between'}>
+                   <div className={'container-fluid description-container d-flex flex-column flex-md-row-reverse justify-content-between'}>
+                       {actImage()}
                        <div>
                            <p>{activity.Description}</p>
                            <b><time>{activity.TimeStart} - {activity.TimeEnd}</time></b>
                        </div>
                    </div>
-                   <div className={'mt-2 container-fluid week-day-container d-flex flex-wrap justify-content-between p-3'}>
+                   <div className={'mt-2 container-fluid week-day-container d-flex flex-wrap justify-content-around justify-content-md-between p-3'}>
                        {weekdays}
                    </div>
-                   <div className={'container-fluid energy-container d-flex flex-wrap justify-content-between mt-2'}>
+                   <div className={'container-fluid energy-container d-flex flex-wrap justify-content-around justify-content-md-between mt-2'}>
                        {energyAmount}
                    </div>
-                   <div id={"accordion"}>
+                   <div className={'mt-2'} id={"accordion"}>
                        <div className="card">
                            <div className="card-header d-flex justify-content-between" id={"heading" + index} data-toggle="collapse"
                                 data-target={"#collapse" + index} aria-expanded="false"

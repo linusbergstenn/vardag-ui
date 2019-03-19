@@ -3,15 +3,41 @@ import axios from "axios";
 
 const AddModal = (props) => {
     console.log('Add_Modal props', props);
+    let choosenFile;
+    let url = props.url;
+
+    let addImage = async (image, id) => {
+        console.log('image from input ', image);
+        let data = new FormData();
+        data.append('pic' ,image, image.name);
+
+        data.append("accountid", props.user.userId);
+        data.append("activityid", id);
+
+        console.log("data in image: ",data);
+
+        await axios({
+            method: 'post',
+            url: url + '/image/UploadImage',
+            data: data
+        }).then((response) => {
+            console.log('Image response: ', response.data);
+            props.reloadActivities();
+        }).catch((error) => {
+            console.log('Error: ', error);
+        });
+    };
+
+
     let addActivity = async () => {
 
         await axios({
             method: 'post',
-            url: 'http://www.altrankarlstad.com/vardag-api/activity/AddActivity',
+            url: url + '/activity/AddActivity',
             params: {
                 AccountId: props.user.userId,
                 ActivityName: document.getElementById('add_activity-name').value,
-                Description: document.getElementById('add_activity-description').value,
+                Description: document.getElementById('add_activity-description').value || 'Ingen beskrivning tillagd',
                 TimeStart: document.getElementById('add_timeStart').value,
                 TimeEnd: document.getElementById('add_timeEnd').value,
                 Date: document.getElementById('add_date').value,
@@ -29,6 +55,10 @@ const AddModal = (props) => {
                 Repeat: document.getElementById('repeatable').checked
             }
         }).then((response) => {
+            console.log('add activity response: ', response.data);
+            if(choosenFile){
+                addImage(choosenFile, response.data[0].ActivityId);
+            }
             props.reloadActivities();
                document.getElementById('add_activity-name').value = '';
                document.getElementById('add_activity-description').value = '';
@@ -63,6 +93,22 @@ const AddModal = (props) => {
         return string;
     };
 
+    let loadImageSrc = () => {
+
+        let file = document.getElementById('add_imageInput').files[0];
+        console.log('choosen file', file);
+        let reader  = new FileReader();
+
+        reader.onloadend = () => {
+            document.getElementById('add_imageOutput').src = reader.result;
+        };
+        if(file){
+            reader.readAsDataURL(file);
+            choosenFile = file;
+
+        }
+    };
+
     let weekdayString = ['Mån', 'Tis', 'Ons', 'Tors', 'Fre', 'Lör', 'Sön'];
     let weekdays = weekdayString.map( (day, index) => {
             return(
@@ -94,6 +140,7 @@ const AddModal = (props) => {
         return <option key={index}>{option}</option>
     });
 
+    let imageSrc = 'https://www.picsum.photos/200/?random';
     if(props.activity !== null || props.activity !== undefined){
         return(
             <div className="modal fade" id="add-content-modal" tabIndex="-1" role="dialog"
@@ -111,6 +158,18 @@ const AddModal = (props) => {
                                 <div className={'form-group'}>
                                     <label htmlFor={'add_activity-name'}>Namn på aktivitet:</label>
                                     <input id={'add_activity-name'} type={'text'} className={'form-control'}/>
+                                </div>
+                                <div className="input-group d-flex flex-column-reverse">
+                                    <div>
+                                        <div className="custom-file">
+                                            <input type="file" className="custom-file-input" id="add_imageInput" accept="image/*" placeholder={'Välj bild: '} onChange={() =>loadImageSrc()}/>
+                                            <label className="custom-file-label" htmlFor="imageInput">Välj bild:</label>
+                                        </div>
+                                    </div>
+                                    <div style={{width: 200 +'px', height: 200 +'px', padding: .1 + 'em',
+                                        marginBottom: .5 + 'em', display: 'grid', placeItems: 'center', overflow: 'hidden'}} className={'border border-dark bg bg-light align-self-center'}>
+                                        <img style={{width: 200 +'px'}} src={imageSrc} alt={'Activity'} className={'img-fluid'} id={'add_imageOutput'}/>
+                                    </div>
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="add_activity-description">Beskrivning</label>

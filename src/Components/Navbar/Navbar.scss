@@ -9,14 +9,14 @@
   .logo{
     width: 15vw;
   }
-
-  .hamburger{
-    cursor: pointer;
-    color: white;
-    transition: color .4s ease-in-out;
-    &:hover{
-      color: rgba(#000, .6);
-    }
+  #userLogo{
+    width: 50%;
+    align-items: center;
+  }
+    #user{
+      &:first-letter{
+        text-transform: uppercase;
+      }
   }
   .md-menu{
     padding: 0 !important;

@@ -25,12 +25,11 @@ class Planner extends Component{
             date: this.date,
             day: this.date.getDay()
         };
-
         console.log('THIS DATE: ', this.date);
-
+        console.log('Planner props: ', props);
+        this.a = props.api;
         this.user = props.user;
         this.signedIn = props.signedIn;
-        this.url = props.url
 
         this.getUserActivities(this.user);
     }
@@ -58,7 +57,7 @@ class Planner extends Component{
 
         axios({
             method: 'get',
-            url: 'http://www.altrankarlstad.com/vardag-api/activity/GetActivities',
+            url: this.a + '/activity/GetActivities',
             params: {
                 username: user.name,
             }
@@ -116,10 +115,13 @@ class Planner extends Component{
                 <div className={'day-container bg-light'}>
                     <nav className={'day-nav d-flex justify-content-between bg-primary'}>
                         <a className={'day-navigator w-25'} onClick={() => dateSubtract()}><FontAwesomeIcon className={'fa-3x align-self-center'} icon={'arrow-left'}/></a>
-                        <div className={'dropdown show'}>
-                            <a className={'p-3 d-flex justify-content-between'} role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-expanded="false">
-                                <h2>{getDayString()}</h2><FontAwesomeIcon icon={'caret-down'} className={'fa-2x ml-2 align-self-center'}/></a>
-                            <div className={'dropdown-menu p-4 bg-primary'}>
+                        <div>
+                            <div className={'p-3 d-flex justify-content-between'} data-toggle="collapse"
+                                 data-target="#datePicker" aria-expanded="false" aria-controls="datePicker">
+                                <h4>{getDayString()}</h4>
+                                <FontAwesomeIcon icon={'caret-down'} className={'fa-2x ml-2 align-self-center'}/>
+                            </div>
+                            <div className={'collapse p-4 bg-primary'} id={'datePicker'}>
                                 <form>
                                     <div className="form-group">
                                         <label htmlFor="specificDate">Välj ett datum: </label>
@@ -144,12 +146,14 @@ class Planner extends Component{
                         <div className={'container d-flex justify-content-between mb-1'}>
                             <h2 className={'title'}>Planera</h2>
                             <h2>Vecka: {currentWeekNumber(this.state.date)}</h2>
-                            <a title={'Lägg till aktivitet'} className={'btn btn-alt1 pr-4 pl-4 add-activity-btn'} data-toggle={'modal'} data-target={'#add-content-modal'}><FontAwesomeIcon icon={'plus'}/></a>
+                            <div title={'Lägg till aktivitet'} className={'btn btn-alt1 pr-4 pl-4 add-activity-btn'} data-toggle={'modal'} data-target={'#add-content-modal'}><FontAwesomeIcon icon={'plus'}/></div>
                         </div>
                         {dayContainer()}
                     </div>
-                    <EditModal reloadActivities={ () => this.getUserActivities(this.user)} activity={this.state.clickedActivity} date={this.state.date}/>
-                    <AddModal reloadActivities={() => this.getUserActivities(this.user)} user={this.user} date={this.state.date} dateString={(...args) => this.getDateString(...args) }/>
+                    <EditModal reloadActivities={ () => this.getUserActivities(this.user)} activity={this.state.clickedActivity}
+                               date={this.state.date} url={this.a}/>
+                    <AddModal reloadActivities={() => this.getUserActivities(this.user)} user={this.user} date={this.state.date}
+                              dateString={(...args) => this.getDateString(...args) } url={this.a}/>
                 </MainContainer>
             );
         }

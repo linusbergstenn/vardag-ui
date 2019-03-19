@@ -28,7 +28,7 @@ const Footer = () => {
             <div className={'w-40'}>
                 <div className={'p-4'}>
                     <h4>I sammarbete med</h4>
-                    <img src={Logo} />
+                    <img className={'logo'} src={Logo} />
                 </div>
             </div>
         </footer>

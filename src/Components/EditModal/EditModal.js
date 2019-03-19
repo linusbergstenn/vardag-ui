@@ -7,13 +7,18 @@ import axios from "axios";
 
 const EditModal = (props) => {
     console.log('Modal props', props);
+    let url = props.url;
+    let imageSrc;
+    let choosenFile;
+
     let deleteActivity = async () => {
      let cnfrm = window.confirm('Vill du ta bort: ' + props.activity.Name +'?');
 
      if(cnfrm){
+         console.log('confirmed', cnfrm);
          await  axios({
              method: 'post',
-             url: 'http://www.altrankarlstad.com/vardag-api/DeleteActivity',
+             url: url + '/activity/DeleteActivity',
              params: {
                  id: props.activity.ActivityId
              }
@@ -25,27 +30,32 @@ const EditModal = (props) => {
      }
 
     };
-    let addImage = async (imgInp) => {
+    let addImage = async (image) => {
+        console.log('image from input ', image);
+        let data = new FormData();
+        data.append('pic' ,image, image.name);
+
+        data.append("accountid", aktivitet.AccountId);
+        data.append("activityid", aktivitet.ActivityId);
+
+        console.log("data in image: ",data);
 
         await axios({
             method: 'post',
-            url: 'http://www.altrankarlstad.com/vardag-api/image/HandleImage',
-            params: {
-                name: imgInp.toString(),
-                activityid: props.activity.ActivityId,
-                accountid: props.activity.AccountId
-            }
+            url: url + '/image/UploadImage',
+            data: data
         }).then((response) => {
             console.log('Image response: ', response.data);
+            props.reloadActivities();
         }).catch((error) => {
-            console.log(error.response.statusText);
+            console.log('Error', error);
         });
-    }
+    };
     let updateActivity = async () => {
 
         await axios({
             method: 'post',
-            url: 'http://www.altrankarlstad.com/vardag-api/activity/EditActivity',
+            url: url + '/activity/EditActivity',
             params: {
                     ActivityId: props.activity.ActivityId,
                     ActivityName: document.getElementById('activity-name').value || props.activity.Name,
@@ -68,8 +78,12 @@ const EditModal = (props) => {
             }
         }).then((response) => {
             console.log('imageInput: ', document.getElementById('imageInput').value);
-            //addImage(document.getElementById('imageInput').value);
-            props.reloadActivities();
+            console.log('update acticity: ', response);
+            if(choosenFile){
+                addImage(choosenFile);
+            }else{
+                props.reloadActivities();
+            }
         }).catch((error) => {
             console.log('Error: ', error)
         });
@@ -89,7 +103,36 @@ const EditModal = (props) => {
             day = '0' + day;
         let dateString = `${year}-${month}-${day}`;
         return dateString;
-    }
+    };
+
+    let getImageSrc = () => {
+        console.log('Aktivitet imageId - getimageSrc: ', aktivitet.ImageId);
+      if(aktivitet.ImageId === null || aktivitet.ImageId === undefined ){
+          console.log('GetImageSrc: har ingen bild');
+          return imageSrc = 'https://picsum.photos/200/?random';
+
+      }else{
+          console.log('GetImageSrc: Aktivitet har en bild');
+          return imageSrc = url + '/image/GetImage?id=' + aktivitet.ImageId;
+
+      }
+    };
+
+    let loadImageSrc = () => {
+
+        let file = document.querySelector('input[type=file]').files[0];
+        console.log('choosen file', file);
+        let reader  = new FileReader();
+
+        reader.onloadend = () => {
+            document.getElementById('imageOutput').src = reader.result;
+        };
+        if(file){
+            reader.readAsDataURL(file);
+            choosenFile = file;
+
+        }
+    };
     let weekdayString = ['Mån', 'Tis', 'Ons', 'Tors', 'Fre', 'Lör', 'Sön'];
     let weekdays = weekdayString.map( (day, index) => {
         let weekday = [aktivitet.Monday, aktivitet.Tuesday, aktivitet.Wednesday, aktivitet.Thursday, aktivitet.Friday, aktivitet.Saturday, aktivitet.Sunday];
@@ -146,6 +189,9 @@ const EditModal = (props) => {
     });
 
 if(props.activity !== null || props.activity !== undefined){
+
+    getImageSrc();
+
     return(
         <div className="modal fade" id="edit-content-modal" tabIndex="-1" role="dialog"
              aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -163,10 +209,16 @@ if(props.activity !== null || props.activity !== undefined){
                                 <label htmlFor={'activity-name'}>Namn på aktivitet:</label>
                                 <input id={'activity-name'} placeholder={aktivitet.Name} type={'text'} className={'form-control'}/>
                             </div>
-                            <div className="input-group">
-                                <div className="custom-file">
-                                    <input type="file" className="custom-file-input" id="imageInput" accept="image/*"/>
+                            <div className="input-group d-flex flex-column-reverse">
+                                <div>
+                                    <div className="custom-file">
+                                        <input type="file" className="custom-file-input" id="imageInput" accept="image/*" placeholder={'Välj bild: '} onChange={() =>loadImageSrc()}/>
                                         <label className="custom-file-label" htmlFor="imageInput">Välj bild:</label>
+                                    </div>
+                                </div>
+                                <div style={{width: 200 +'px', height: 200 +'px', padding: .1 + 'em',
+                                    marginBottom: .5 + 'em', display: 'grid', placeItems: 'center', overflow: 'hidden'}} className={'border border-dark bg bg-light align-self-center'}>
+                                    <img style={{width: 200 +'px'}} src={imageSrc} alt={'Activity image'} className={'img-fluid'} id={'imageOutput'}/>
                                 </div>
                             </div>
                             <div className="form-group">

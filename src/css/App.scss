@@ -1,15 +1,20 @@
 @import 'variables';
-@import url('https://fonts.googleapis.com/css?family=Josefin+Sans|Mogra|Baloo+Thambi|Lobster|Roboto');
-
+@import url('https://fonts.googleapis.com/css?family=Fira+Sans|Mogra|Baloo+Thambi|Lobster|Roboto|Oswald|Playfair+Display');
+*{
+  padding: 0;
+  margin: 0;
+}
 .App{
-  font-family: "Roboto", sans-serif;
+  font-family: "Rockwell Extra Bold", sans-serif;
   overflow: hidden;
   width: 100vw;
   height: 100vh;
 
-  .navbar, footer, h1, h2, h3, h4, h5, h6{
-    font-family: 'Baloo Thambi', cursive;
-    font-weight: bolder;
+  .navbar, footer{
+   .link, h1, h2, h3, h4, h5, h6{
+      font-family: 'Baloo Thambi', cursive;
+      font-weight: bolder;
+    }
   }
   .scroll-container{
     position: relative;

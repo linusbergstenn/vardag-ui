@@ -18,6 +18,7 @@ import 'bootstrap/dist/js/bootstrap.min';
 import 'react-perfect-scrollbar/dist/css/styles.css'
 import './css/App.scss';
 import './css/animate.css';
+import Config from './Config.json';
 
 class App extends Component {
 
@@ -27,6 +28,7 @@ class App extends Component {
             loggedIn: false,
             user: {}
         };
+        this.url = Config.URL.PUBLISH
     }
 
 
@@ -61,7 +63,7 @@ class App extends Component {
         $('.spinner-border').removeClass('d-none');
         await axios({
             method: 'post',
-            url: 'http://www.altrankarlstad.com/vardag-api/auth/ValidateUser',
+            url: this.url + '/auth/ValidateUser',
             params: {
                 username: user,
                 password: pass
@@ -87,7 +89,7 @@ class App extends Component {
 
 
     render() {
-
+    console.log('api url: ', this.url);
     let quickSign = (event) => {
         if(event.code === 'Backslash' && this.state.loggedIn === false){
             this.login('Linus', 'linus');

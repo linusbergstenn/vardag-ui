@@ -2,14 +2,13 @@
 
 .main-container{
   padding: 0 !important;
-  min-height: 70vh;
-  margin: 1em 0 3em 0;
+  min-height: 15vh;
 
   .signed-in-view{
     color: $primary;
     img{
-      width: 40%;
-      height: 70%;
+      width: 20%;
+      height: 20%;
     }
   }
   #user{
@@ -30,7 +29,6 @@
   .main-container{
     padding: 0 !important;
     min-height: 40vh;
-    margin: 1em 0 3em 0;
 
     .line{
       top:4vh;

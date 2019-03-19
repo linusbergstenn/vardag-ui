@@ -1,0 +1,6 @@
+{
+ "URL": {
+   "DEV": "http://localhost:5000",
+   "PUBLISH": "http://altrankarlstad.com/vardag-api"
+ }
+}

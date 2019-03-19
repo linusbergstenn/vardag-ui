@@ -13,45 +13,60 @@ import Events from './Events/Events';
 import Planner from './Planner/Planner';
 import LogOut from './LogOut/LogOut';
 import NotFound from './NotFound/NotFound';
+import {AddActivity} from "./AddActivity/AddActivity";
+import bg from "../imgs/headerbg.png";
+
+let style = {
+    backgroundImage: `url(${bg})`,
+    backgroundSize: 'cover',
+    height: 100 + 'vh',
+    width: 100 + 'vw'
+};
+
 
 const Routes = (props) =>{
     let signedIn = props.state.loggedIn;
     let user = props.state.user;
+    let url = props.url;
+
+    console.log('Window url: ', window.location.pathname);
     console.log('signedIn: ', signedIn + '\n user: ', user);
         if(signedIn === false){
-            return(
+                return(
+                    <BrowserRouter>
+                        <div>
+                            <Header signedIn={signedIn} signOut={props.signOut} user={user}/>
+                            <Switch>
+                                <Route exact path={'/'} component={() => <Home signedIn={signedIn} user={user}/>} />
+                                <Route path={'/About'} component={() => <About signedIn={signedIn} user={user}/>} />
+                                <Route path={'/Contact'} component={() => <Contact signedIn={signedIn} user={user}/>} />
+                                <Route path={'/LogIn'} component={() => <LogIn signedIn={signedIn} signIn={props.signIn} user={user} />} />
+                                <Route path={'/Events'} component={ () => <Events signedIn={signedIn} user={user}/>} />
+                                <Route path={'/Planner'} component={ () => <Planner signedIn={signedIn}
+                                                                                    user={user} api={url}/>} />
+                                <Route path={'/signedout'} component={ () => <LogOut signedIn={signedIn}/>} />
+                                <Route path={'/NewActivity'} component={() => <AddActivity user={user} signedIn={signedIn} api={url}/>}/>
+                                <Route component={NotFound} />
+                            </Switch>
+                            <Footer/>
+                        </div>
+                    </BrowserRouter>
+                );
+        }else {
+            return (
                 <BrowserRouter>
                     <div>
-                        <Header signedIn={signedIn} signOut={props.signOut} user={user}/>
+                        <Navbar signedIn={signedIn} signOut={props.signOut} user={user}/>
                         <Switch>
                             <Route exact path={'/'} component={() => <Home signedIn={signedIn} user={user}/>} />
                             <Route path={'/About'} component={() => <About signedIn={signedIn} user={user}/>} />
                             <Route path={'/Contact'} component={() => <Contact signedIn={signedIn} user={user}/>} />
                             <Route path={'/LogIn'} component={() => <LogIn signedIn={signedIn} signIn={props.signIn} user={user} />} />
                             <Route path={'/Events'} component={ () => <Events signedIn={signedIn} user={user}/>} />
-                            <Route path={'/Planner'} component={ () => <Planner signedIn={signedIn} user={user} />} />
+                            <Route path={'/Planner'} component={ () => <Planner signedIn={signedIn}
+                                                                                user={user} api={url}/>} />
                             <Route path={'/signedout'} component={ () => <LogOut signedIn={signedIn}/>} />
-                            <Route component={NotFound} />
-                        </Switch>
-                        <Footer/>
-                    </div>
-                </BrowserRouter>
-            );
-        }else{
-            return(
-                <BrowserRouter>
-                    <div>
-                        <Navbar signedIn={signedIn} signOut={props.signOut} user={user} />
-                        <Switch>
-                            <Route exact path={'/'} component={() => <Home signedIn={signedIn} user={user}/>} />
-                            <Route path={'/About'} component={() => <About signedIn={signedIn} user={user}/>} />
-                            <Route path={'/Contact'} component={() => <Contact signedIn={signedIn} user={user}/>} />
-                            <Route path={'/LogIn'} component={() => <LogIn signedIn={signedIn} signIn={props.signIn} user={user}/>} />
-                            <Route path={'/Events'} component={ () => <Events signedIn={signedIn} user={user} user={user}/>} />
-                            <Route path={'/Planner'} component={ () => <Planner signedIn={signedIn} user={user}
-                                                                                pics={props.pics}
-                                                                                activities={props.state.activities}/>} />
-                            <Route path={'/signedout'} component={ () => <LogOut signedIn={signedIn}/>} />
+                            <Route path={'/NewActivity'} component={() => <AddActivity user={user} signedIn={signedIn} api={url}/>}/>
                             <Route component={NotFound} />
                         </Switch>
                         <Footer/>
