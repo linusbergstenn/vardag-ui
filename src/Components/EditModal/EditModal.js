@@ -40,15 +40,26 @@ const EditModal = (props) => {
 
         console.log("data in image: ",data);
 
+        var axiosConfig = {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'POST, GET, PUT, OPTIONS, DELETE',
+                'Access-Control-Allow-Headers': 'Access-Control-Allow-Methods, Access-Control-Allow-Origin, Origin, Accept, Content-Type',
+                'Accept': 'application/x-www-form-urlencoded',
+                'Content-Type':'application/x-www-form-urlencoded'
+            }
+        };
+
         await axios({
             method: 'post',
             url: url + '/image/UploadImage',
-            data: data
+            data: data,
+            config: axiosConfig
         }).then((response) => {
             console.log('Image response: ', response.data);
             props.reloadActivities();
         }).catch((error) => {
-            console.log('Error', error);
+            console.log('Activity iamge-Error', error);
         });
     };
     let updateActivity = async () => {
@@ -85,7 +96,7 @@ const EditModal = (props) => {
                 props.reloadActivities();
             }
         }).catch((error) => {
-            console.log('Error: ', error)
+            console.log('Activity-Error: ', error)
         });
 
 

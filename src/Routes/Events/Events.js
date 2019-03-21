@@ -48,7 +48,7 @@ const Events = (props) => {
    } else{
        return(
            <MainContainer signedIn={props.signedIn} user={props.user}>
-               <div className={'container'}>
+               <div className={'container mb-3'}>
                    <div className={'container'}>
                        <h2 className={'title'}>Senaste Händelserna</h2>
                        <div>

@@ -52,16 +52,16 @@ const AddModal = (props) => {
                 Privat: document.getElementById('add_permBox0').checked,
                 Hemma: document.getElementById('add_permBox1').checked,
                 Skola: document.getElementById('add_permBox2').checked,
-                Repeat: document.getElementById('repeatable').checked
             }
         }).then((response) => {
             console.log('add activity response: ', response.data);
             if(choosenFile){
                 addImage(choosenFile, response.data[0].ActivityId);
+            }else {
+                props.reloadActivities();
+                document.getElementById('add_activity-name').value = '';
+                document.getElementById('add_activity-description').value = '';
             }
-            props.reloadActivities();
-               document.getElementById('add_activity-name').value = '';
-               document.getElementById('add_activity-description').value = '';
 
         }).catch((error) => {
             console.log('Error: ', error)
@@ -205,12 +205,6 @@ const AddModal = (props) => {
                                     <label htmlFor="add_permissions">Behörigheter</label>
                                     <div id="add_permissions">
                                         {permissions}
-                                    </div>
-                                </div>
-                                <div className={'form-group'}>
-                                    <div className="custom-control custom-checkbox custom-control-inline">
-                                        <label className={'custom-control-label'} htmlFor="repeatable">repeatable</label>
-                                        <input className={'custom-control-input'} type={'checkbox'} id="repeatable" />
                                     </div>
                                 </div>
                             </form>

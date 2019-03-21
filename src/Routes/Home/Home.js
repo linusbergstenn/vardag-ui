@@ -41,7 +41,7 @@ const Home = (props) => {
 
     return(
         <MainContainer signedIn={props.signedIn} user={props.user}>
-            <div className={'container'}>
+            <div className={'container mb-3'}>
                 <div className={'container'}>
                     <h2 className={'title'}>Aktuellt</h2>
                     <div className={'d-flex flex-wrap justify-content-around'}>

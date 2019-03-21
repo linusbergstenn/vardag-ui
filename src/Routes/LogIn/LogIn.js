@@ -19,7 +19,7 @@ const LogIn = (props) => {
     if(props.signedIn !== true){
         return(
             <MainContainer signedIn={props.signedIn}>
-                <div className={'container'}>
+                <div className={'container mb-3'}>
                     <h2 className={'title'}>Logga in</h2>
                     <div className={'container bg-light d-flex justify-content-around'}>
                         <form  onSubmit={signIn} className={'p-4'}>

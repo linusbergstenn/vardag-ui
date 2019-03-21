@@ -28,7 +28,7 @@ class App extends Component {
             loggedIn: false,
             user: {}
         };
-        this.url = Config.URL.PUBLISH
+        this.url = Config.URL.DEV
     }
 
 

@@ -12,7 +12,7 @@ const Contact = (props) => {
     if(props.signedIn === false){
         return(
             <MainContainer signedIn={props.signedIn} user={props.user}>
-                <div className={'container bg-light'}>
+                <div className={'container bg-light mb-3'}>
                     <div className={'info-container'}>
                         <h2 className={'title'}>Kontakt</h2>
 

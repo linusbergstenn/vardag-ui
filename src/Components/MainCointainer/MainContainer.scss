@@ -2,7 +2,7 @@
 
 .main-container{
   padding: 0 !important;
-  min-height: 15vh;
+  min-height: 75vh;
 
   .signed-in-view{
     color: $primary;
@@ -53,10 +53,6 @@
 }
 @media screen and (max-width: 1024px){
   .main-container{
-
-    .line{
-      display: none;
-    }
     .title{
       padding: 0 0 0 2%;
       color: $primary;

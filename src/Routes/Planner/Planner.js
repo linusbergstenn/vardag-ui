@@ -142,7 +142,7 @@ class Planner extends Component{
         }else{
             return(
                 <MainContainer signedIn={this.signedIn} user={this.user}>
-                    <div className={'container'}>
+                    <div className={'container mt-2 mb-4'}>
                         <div className={'container d-flex justify-content-between mb-1'}>
                             <h2 className={'title'}>Planera</h2>
                             <h2>Vecka: {currentWeekNumber(this.state.date)}</h2>

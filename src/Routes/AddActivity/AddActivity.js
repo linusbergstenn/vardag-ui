@@ -3,6 +3,7 @@ import MainContainer from "../../Components/MainCointainer/MainContainer";
 import axios from "axios";
 
 import bg from '../../imgs/lightabstract.jpg'
+import {Redirect} from "react-router";
 
 export const AddActivity = (props) => {
     let url = props.api;
@@ -95,9 +96,12 @@ export const AddActivity = (props) => {
       height: 100 + 'vh',
         width: 100 + 'vw'
     };
-    return(
-        <MainContainer user={props.user} signedIn={props.signedIn} style={style}>
-                <div className={'container bg-light'}>
+
+
+    if(props.signedIn){
+        return(
+            <MainContainer user={props.user} signedIn={props.signedIn} cls={true}>
+                <div className={'container bg-light mb-3'}>
                     <div className={'container p-3'}>
                         <h2 className={'title'}>Lägg till en allmänn aktivitet: </h2>
                     </div>
@@ -109,9 +113,12 @@ export const AddActivity = (props) => {
                                         <label htmlFor={'activity-name'}>Namn på aktivitet:</label>
                                         <input id={'activity-name'} type={'text'} className={'form-control'}/>
                                     </div>
-                                    <div className='mb-2 mb-md-0'>
+                                    <div className='mb-2 mb-md-0 input-group'>
+                                        <div className='input-group-append'>
+                                            <a onClick={null} style={{cursor: 'pointer'}} className='input-group-text'> Dina bilder </a>
+                                        </div>
                                         <div className="custom-file">
-                                            <input type="file" className="custom-file-input" id="imageInput" accept="image/*" placeholder={'Välj bild: '} onChange={() =>loadImageSrc()}/>
+                                            <input type="file" style={{cursor: 'pointer'}} className="custom-file-input" id="imageInput" accept="image/*" placeholder={'Välj bild: '} onChange={() =>loadImageSrc()}/>
                                             <label className="custom-file-label" htmlFor="imageInput">Välj bild för aktivitet:</label>
                                         </div>
                                     </div>
@@ -130,6 +137,8 @@ export const AddActivity = (props) => {
                         </form>
                     </div>
                 </div>
-        </MainContainer>
-    );
+            </MainContainer>
+        );
+    }else
+        return <Redirect to={'/login'}/>
 };

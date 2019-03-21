@@ -9,13 +9,6 @@
   overflow: hidden;
   width: 100vw;
   height: 100vh;
-
-  .navbar, footer{
-   .link, h1, h2, h3, h4, h5, h6{
-      font-family: 'Baloo Thambi', cursive;
-      font-weight: bolder;
-    }
-  }
   .scroll-container{
     position: relative;
     width: 100%;
@@ -73,5 +66,4 @@
     border: $alt3 solid .1px;
     color: white;
   }
-
 }

@@ -7,8 +7,8 @@ header{
   background-size: cover;
 
   .info-container{
-    padding: 0.1rem;
     color: white;
+    padding: 3.5rem !important;
     position: relative !important;
     left: 5% !important;
     top: 10%;
@@ -22,8 +22,8 @@ header{
 @media screen and (max-width: 1508px) {
   header{
     .info-container{
+      padding: 1.3rem !important;
       top: 5%;
-      padding: 0;
     }
   }
 }
