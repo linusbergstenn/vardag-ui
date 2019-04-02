@@ -26,7 +26,7 @@ const MainContainer = (props) => {
             <main className={'main-container container-fluid'}>
                 <div className={'container d-none d-lg-flex justify-content-between signed-in-view pt-4'}>
                     <img src={Logo} />
-                    <h1 id={'user'} className={'align-self-center'}>{user.username || 'Användare'}</h1>
+                    <h1 id={'user'} className={'align-self-center'}>{user.name || 'Användare'}</h1>
                 </div>
                 <img src={Line}
                      className={'line d-none d-md-block'}/>

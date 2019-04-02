@@ -14,22 +14,13 @@ import Planner from './Planner/Planner';
 import LogOut from './LogOut/LogOut';
 import NotFound from './NotFound/NotFound';
 import {AddActivity} from "./AddActivity/AddActivity";
-import bg from "../imgs/headerbg.png";
-
-let style = {
-    backgroundImage: `url(${bg})`,
-    backgroundSize: 'cover',
-    height: 100 + 'vh',
-    width: 100 + 'vw'
-};
-
 
 const Routes = (props) =>{
     let signedIn = props.state.loggedIn;
     let user = props.state.user;
     let url = props.url;
 
-    console.log('Window url: ', window.location.pathname);
+    console.log('WinSize: ', window.innerWidth);
     console.log('signedIn: ', signedIn + '\n user: ', user);
         if(signedIn === false){
                 return(

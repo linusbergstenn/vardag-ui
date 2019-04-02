@@ -17,8 +17,7 @@ const DayView = (props) => {
 
     let getImage = async (a) => {
       console.log('Aktivitet ' + a.Name + ' har ett bildId:', a.ImageId);
-      activityImage = 'http://localhost:5000/image/GetImage?id=' + a.ImageId;
-
+      activityImage = props.api + '/image/GetImage?id=' + a.ImageId;
     };
 
 

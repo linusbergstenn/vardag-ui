@@ -1,11 +1,12 @@
 import React , { Component } from 'react';
-import { Redirect } from "react-router-dom";
+import {NavLink, Redirect} from "react-router-dom";
 
 import $ from 'jquery';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MainContainer from "../../Components/MainCointainer/MainContainer";
 import DayView from "../../Components/DayView/DayView";
 import EditModal from "../../Components/EditModal/EditModal";
+import EditGeneralModal from "../../Components/EditGeneralModal/EditGeneralModal";
 import AddModal from "../../Components/AddModal/AddModal";
 
 import axios from "axios";
@@ -13,6 +14,7 @@ import axios from "axios";
 import currentWeekNumber from 'current-week-number';
 
 import './Planner.scss';
+import GeneralActivities from "../../Components/GeneralActivities/GeneralActivities";
 
 
 class Planner extends Component{
@@ -21,24 +23,40 @@ class Planner extends Component{
         this.date = new Date();
         this.state = {
             activities: [],
+            generalActivities: [],
             clickedActivity: '',
             date: this.date,
             day: this.date.getDay()
         };
         console.log('THIS DATE: ', this.date);
         console.log('Planner props: ', props);
-        this.a = props.api;
+        this.api = props.api;
         this.user = props.user;
         this.signedIn = props.signedIn;
 
-        this.getUserActivities(this.user);
+        this.rsUp(this.user)
     }
-
+    rsUp(user){
+        console.log('RSUP STARTED and user: ', user);
+        this.getUserActivities(user);
+        this.getGeneralActivities();
+    }
     sendToModal(activity){
         if(activity !== null){
             console.log('sendToModal', activity);
             this.setState({clickedActivity: activity})
         }
+    };
+
+    getGeneralActivities(){
+        axios.get(this.api + '/GeneralActivity/GetGeneralActivities')
+            .then((response) => {
+                this.setState({
+                    generalActivities: response.data
+                });
+            }).catch( error => {
+                console.log(error);
+        });
     };
     getDateString() {
         let year = this.state.date.getUTCFullYear();
@@ -54,10 +72,9 @@ class Planner extends Component{
         return dateString;
     }
     getUserActivities(user){
-
         axios({
             method: 'get',
-            url: this.a + '/activity/GetActivities',
+            url: this.api + '/Activity/GetActivities',
             params: {
                 username: user.name,
             }
@@ -69,6 +86,7 @@ class Planner extends Component{
     };
 
     render(){
+        console.log('Planner user', this.props.user); 
         let newDate = new Date(this.state.date);
         let dateAdd = () => {
             newDate.setDate(newDate.getDate() + 1);
@@ -103,7 +121,7 @@ class Planner extends Component{
             if(window.innerWidth > 1023){
                 todayString =weekdayString[this.state.day] + 'dag ' + this.state.date.getUTCDate() + ' / ' + (this.state.date.getUTCMonth() + 1 )+ ' - ' + this.state.date.getUTCFullYear();
             }else{
-              todayString = weekdayString[this.state.day] + ' ' + this.state.date.getUTCDate() + ' / ' + (this.state.date.getUTCMonth() + 1 )+ ' - ' + this.state.date.getUTCFullYear().toString().slice(2);
+              todayString = this.state.date.getUTCDate() + ' / ' + (this.state.date.getUTCMonth() + 1) + ' - ' + this.state.date.getUTCFullYear().toString().slice(2);
             }
 
             return todayString;
@@ -133,7 +151,8 @@ class Planner extends Component{
                         </div>
                         <a className={'day-navigator w-25'} onClick={() => dateAdd()}><FontAwesomeIcon className={'fa-3x align-self-center'} icon={'arrow-right'}/></a>
                     </nav>
-                    <DayView date={this.state.date} activities={this.state.activities} sendToModal={(...args) => this.sendToModal(...args)}/>
+                    <DayView date={this.state.date} activities={this.state.activities}
+                             sendToModal={(...args) => this.sendToModal(...args)} api={this.api} reloadActivities={ (...args) => this.getUserActivities(...args)} user={this.user}/>
                 </div>
             );
         };
@@ -142,18 +161,49 @@ class Planner extends Component{
         }else{
             return(
                 <MainContainer signedIn={this.signedIn} user={this.user}>
-                    <div className={'container mt-2 mb-4'}>
-                        <div className={'container d-flex justify-content-between mb-1'}>
-                            <h2 className={'title'}>Planera</h2>
-                            <h2>Vecka: {currentWeekNumber(this.state.date)}</h2>
-                            <div title={'Lägg till aktivitet'} className={'btn btn-alt1 pr-4 pl-4 add-activity-btn'} data-toggle={'modal'} data-target={'#add-content-modal'}><FontAwesomeIcon icon={'plus'}/></div>
-                        </div>
-                        {dayContainer()}
+                    <div className={'conainer'}>
+                       <div className={'container'}>
+                           <h2 className={'title'}>Planera</h2>
+                           <nav className={'title'}>
+                               <div className="nav nav-tabs" id="nav-tab" role="tablist">
+                                   <a className="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#your-activities"
+                                      role="tab" aria-controls="nav-home" aria-selected="true">Ditt schema</a>
+                                   <a className="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#general-activities"
+                                      role="tab" aria-controls="nav-profile" aria-selected="false">Allmänna aktiviteter</a>
+                               </div>
+                           </nav>
+                           <div className="tab-content" id="myTabContent">
+                               <div className="tab-pane fade show active" id="your-activities" role="tabpanel"
+                                    aria-labelledby="home-tab">
+                                   <div className={'container mt-2 mb-4 bg-light'}>
+                                       <div className={'container d-flex justify-content-between mb-1 mt-2'}>
+                                           <h2 className={'title'}>Schema</h2>
+                                           <h2>Vecka: {currentWeekNumber(this.state.date)}</h2>
+                                           <div title={'Lägg till aktivitet'} className={'btn btn-alt1 pr-4 pl-4 add-activity-btn'} data-toggle={'modal'} data-target={'#add-content-modal'}><FontAwesomeIcon icon={'plus'}/></div>
+                                       </div>
+                                       {dayContainer()}
+                                   </div>
+                               </div>
+                               <div className="tab-pane fade" id="general-activities" role="tabpanel" aria-labelledby="profile-tab">
+                                   <div className={'container mt-2 mb-4 bg-light general-activities-container'}>
+                                       <div className={'container mb-1 mt-2'}>
+                                           <NavLink className={'pr-4'} to={'/NewActivity'}>Allmän aktivitet</NavLink>
+                                           <div className={'container '}>
+                                               <GeneralActivities activities={this.state.generalActivities} api={this.api} reloadActivities={ () => this.rsUp(this.user)} user={this.user} sendToModal={(...args) => this.sendToModal(...args)}/>
+                                           </div>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
                     </div>
-                    <EditModal reloadActivities={ () => this.getUserActivities(this.user)} activity={this.state.clickedActivity}
-                               date={this.state.date} url={this.a}/>
-                    <AddModal reloadActivities={() => this.getUserActivities(this.user)} user={this.user} date={this.state.date}
-                              dateString={(...args) => this.getDateString(...args) } url={this.a}/>
+                    <EditModal reloadActivities={ () => this.rsUp(this.user)} activity={this.state.clickedActivity}
+                               date={this.state.date} url={this.api}/>
+                    <AddModal reloadActivities={() => this.rsUp(this.user)} user={this.user} date={this.state.date}
+                              dateString={(...args) => this.getDateString(...args) } url={this.api}/>
+                    <EditGeneralModal reloadActivities={() => this.rsUp(this.user)} user={this.user} date={this.state.date}
+                              dateString={(...args) => this.getDateString(...args) } url={this.api} activity={this.state.clickedActivity}/>
+
                 </MainContainer>
             );
         }

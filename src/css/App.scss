@@ -5,7 +5,7 @@
   margin: 0;
 }
 .App{
-  font-family: "Rockwell Extra Bold", sans-serif;
+  font-family: "Fira Sans", sans-serif;
   overflow: hidden;
   width: 100vw;
   height: 100vh;
@@ -41,8 +41,13 @@
   .bg-alt3{
     background-color: $alt3;
   }
-
-
+  
+  .icon{
+    cursor: pointer;
+    &:hover{
+      transform: scale(1.1);
+    }
+  }
   .btn-primary{
     background-color: $primary!important;
     color: white !important;
@@ -65,5 +70,11 @@
     background-color: $alt3;
     border: $alt3 solid .1px;
     color: white;
+  }
+  .nav-link{
+    color: $primary;
+  }
+  .nav-link.active{
+    color: $secondary;
   }
 }

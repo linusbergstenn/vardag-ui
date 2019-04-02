@@ -7,13 +7,11 @@ import Form from '../../Components/Form/Form';
 
 import './Contact.scss'
 const Contact = (props) => {
-
-    console.table(props.user)
     if(props.signedIn === false){
         return(
             <MainContainer signedIn={props.signedIn} user={props.user}>
                 <div className={'container bg-light mb-3'}>
-                    <div className={'info-container'}>
+                    <div className={'info-container container'}>
                         <h2 className={'title'}>Kontakt</h2>
 
                         <div className={'container d-flex justify-content-around flex-column flex-md-row'}>

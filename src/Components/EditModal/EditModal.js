@@ -218,7 +218,7 @@ if(props.activity !== null || props.activity !== undefined){
                         <form>
                             <div className={'form-group'}>
                                 <label htmlFor={'activity-name'}>Namn på aktivitet:</label>
-                                <input id={'activity-name'} placeholder={aktivitet.Name} type={'text'} className={'form-control'}/>
+                                <input id={'activity-name'} defaultValue={aktivitet.Name} type={'text'} className={'form-control'}/>
                             </div>
                             <div className="input-group d-flex flex-column-reverse">
                                 <div>
@@ -234,7 +234,7 @@ if(props.activity !== null || props.activity !== undefined){
                             </div>
                             <div className="form-group">
                                 <label htmlFor="activity-description">Beskrivning</label>
-                                <textarea placeholder={aktivitet.Description} className="form-control" id="activity-description" rows={'3'}/>
+                                <textarea defaultValue={aktivitet.Description} className="form-control" id="activity-description" rows={'3'}/>
                             </div>
                             <div className={'form-group'}>
                                 <label htmlFor="date">Datum för aktivitet: </label>
@@ -246,7 +246,7 @@ if(props.activity !== null || props.activity !== undefined){
                                     <input className={'form-control'} type={'time'} id={'timeStart'} defaultValue={aktivitet.TimeStart} />
                                 </div>
                                 <div>
-                                    <label htmlFor="timeEndt">Aktiviteten slutar: </label>
+                                    <label htmlFor="timeEnd">Aktiviteten slutar: </label>
                                     <input className={'form-control'} type={'time'} id={'timeEnd'} defaultValue={aktivitet.TimeEnd} />
                                 </div>
                             </div>

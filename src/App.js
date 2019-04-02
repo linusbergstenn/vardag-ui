@@ -9,7 +9,7 @@ import PerfectScrollBar from 'react-perfect-scrollbar';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faPhone, faEnvelope, faUserAlt, faPowerOff, faLock, faLockOpen,
     faScrewdriver, faXRay, faFingerprint, faBolt, faPencilAlt,
-    faBars, faPlus, faArrowRight, faArrowLeft, faCaretDown}
+    faBars, faPlus, faArrowRight, faArrowLeft, faCaretDown, faTrash}
     from '@fortawesome/free-solid-svg-icons';
 
 
@@ -34,11 +34,14 @@ class App extends Component {
 
     handleLogin = (name, id) => {
         console.log('handle login');
+        let stringedName =  name.charAt(0).toUpperCase() + name.slice(1);
+
+
         this.setState({
             loggedIn: true,
             user: {
                 username: name,
-                name: name,
+                name: stringedName,
                 userId: id
             }
         });
@@ -97,7 +100,7 @@ class App extends Component {
     };
 
     library.add(faEnvelope, faPhone, faUserAlt, faPowerOff, faLock, faLockOpen, faScrewdriver,
-        faXRay, faFingerprint, faBolt, faPencilAlt, faBars, faPlus, faArrowRight, faArrowLeft, faCaretDown);
+        faXRay, faFingerprint, faBolt, faPencilAlt, faBars, faPlus, faArrowRight, faArrowLeft, faCaretDown, faTrash);
     window.addEventListener('keypress', quickSign);
     return(
         <div className={'App'}>

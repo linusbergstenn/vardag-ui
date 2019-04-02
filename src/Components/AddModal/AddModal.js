@@ -22,7 +22,6 @@ const AddModal = (props) => {
             data: data
         }).then((response) => {
             console.log('Image response: ', response.data);
-            props.reloadActivities();
         }).catch((error) => {
             console.log('Error: ', error);
         });
@@ -57,12 +56,12 @@ const AddModal = (props) => {
             console.log('add activity response: ', response.data);
             if(choosenFile){
                 addImage(choosenFile, response.data[0].ActivityId);
-            }else {
-                props.reloadActivities();
-                document.getElementById('add_activity-name').value = '';
-                document.getElementById('add_activity-description').value = '';
             }
 
+        }).then( () => {
+            props.reloadActivities();
+            document.getElementById('add_activity-name').value = '';
+            document.getElementById('add_activity-description').value = '';
         }).catch((error) => {
             console.log('Error: ', error)
         });

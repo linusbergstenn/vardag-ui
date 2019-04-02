@@ -66,7 +66,6 @@ const Navbar = (props) => {
                             <NavLink className={'pr-4 link'} to={'/Contact'}>Kontakt</NavLink>
                         </ul>
                         <div className="my-2 my-lg-0 align-self-center d-flex flex-column-reverse">
-                            <NavLink className={'pr-4 link'} to={'/NewActivity'}>Allmän aktivitet</NavLink>
                             <NavLink onClick={() => signOut(user)} className={'link d-flex sign-out '}
                                      to={'/signedout'}>
                                 <FontAwesomeIcon icon={'user-alt'} title={'Sign Out'}/>

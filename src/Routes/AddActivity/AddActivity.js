@@ -29,7 +29,7 @@ export const AddActivity = (props) => {
 
     let loadImageSrc = () => {
 
-        let file = document.querySelector('input[type=file]').files[0];
+        let file = document.querySelector('input[type=file]#GeneralimageInput').files[0];
         console.log('choosen file', file);
         let reader  = new FileReader();
 
@@ -53,11 +53,36 @@ export const AddActivity = (props) => {
             data: data
         }).then((response) => {
             console.log('Image response: ', response.data);
-            props.reloadActivities();
         }).catch((error) => {
             console.log('Error', error);
         });
     };
+
+    let addGA = async() => {
+        let data = new FormData();
+        data.append('Name', document.getElementById('add-generalactivity-name').value);
+        data.append('Description', document.getElementById('add-generalactivity-description').value);
+        data.append('Contributor', props.user.name);
+       axios({
+           method: 'post',
+           url: props.api + '/GeneralActivity/AddGeneralActivity',
+           data: data
+       })
+       .then( response => {
+           console.log('Added general activity: ', response.data);
+           if(choosenFile){
+               addImage(choosenFile);
+           }
+           document.getElementById('add-generalactivity-name').value = '';
+           document.getElementById('add-generalactivity-description').value = '';
+        }).catch( error => {
+            console.log(error);
+       });
+    };
+
+
+
+
 
     let maxEnergy = 10;
     let optionsArray = [];
@@ -103,23 +128,23 @@ export const AddActivity = (props) => {
             <MainContainer user={props.user} signedIn={props.signedIn} cls={true}>
                 <div className={'container bg-light mb-3'}>
                     <div className={'container p-3'}>
-                        <h2 className={'title'}>Lägg till en allmänn aktivitet: </h2>
+                        <h2 className={'title'}>Lägg till en allmän aktivitet: </h2>
                     </div>
                     <div className=''>
                         <form>
                             <div className='d-flex align-items-center justify-content-around flex-column-reverse flex-md-row'>
                                 <div className={'w-75 d-flex flex-column-reverse flex-md-column'}>
                                     <div className='form-group'>
-                                        <label htmlFor={'activity-name'}>Namn på aktivitet:</label>
-                                        <input id={'activity-name'} type={'text'} className={'form-control'}/>
+                                        <label htmlFor={'add-generalactivity-name'}>Namn på aktivitet:</label>
+                                        <input id={'add-generalactivity-name'} type={'text'} className={'form-control'}/>
                                     </div>
                                     <div className='mb-2 mb-md-0 input-group'>
                                         <div className='input-group-append'>
                                             <a onClick={null} style={{cursor: 'pointer'}} className='input-group-text'> Dina bilder </a>
                                         </div>
                                         <div className="custom-file">
-                                            <input type="file" style={{cursor: 'pointer'}} className="custom-file-input" id="imageInput" accept="image/*" placeholder={'Välj bild: '} onChange={() =>loadImageSrc()}/>
-                                            <label className="custom-file-label" htmlFor="imageInput">Välj bild för aktivitet:</label>
+                                            <input type="file" style={{cursor: 'pointer'}} className="custom-file-input" id="GeneralimageInput" accept="image/*" placeholder={'Välj bild: '} onChange={() =>loadImageSrc()}/>
+                                            <label className="custom-file-label" htmlFor="GeneralimageInput">Välj bild för aktivitet:</label>
                                         </div>
                                     </div>
                                 </div>
@@ -131,10 +156,11 @@ export const AddActivity = (props) => {
                                 </div>
                             </div>
                             <div className='form-group'>
-                                <label htmlFor={'activity-name'}>Beskrivning av aktivitet</label>
-                                <textarea id={'activity-name'} className={'form-control'}/>
+                                <label htmlFor={'add-generalactivity-description'}>Beskrivning av aktivitet</label>
+                                <textarea id={'add-generalactivity-description'} className={'form-control'}/>
                             </div>
                         </form>
+                        <a style={{cursor: 'pointer'}} className='btn btn-primary' onClick={() => addGA()}> lägg till aktiviteten</a>
                     </div>
                 </div>
             </MainContainer>
