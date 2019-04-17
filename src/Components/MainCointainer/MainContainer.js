@@ -3,8 +3,6 @@ import React from 'react';
 import Line from '../../imgs/DotLine.svg'
 import Logo from '../../imgs/logo-navy.png'
 
-import $ from 'jquery'
-
 import 'bootstrap';
 import './MainContainer.scss';
 

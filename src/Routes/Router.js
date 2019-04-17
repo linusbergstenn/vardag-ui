@@ -25,7 +25,7 @@ const Routes = (props) =>{
         if(signedIn === false){
                 return(
                     <BrowserRouter>
-                        <div>
+                        <React.Fragment>
                             <Header signedIn={signedIn} signOut={props.signOut} user={user}/>
                             <Switch>
                                 <Route exact path={'/'} component={() => <Home signedIn={signedIn} user={user}/>} />
@@ -40,28 +40,28 @@ const Routes = (props) =>{
                                 <Route component={NotFound} />
                             </Switch>
                             <Footer/>
-                        </div>
+                        </React.Fragment>
                     </BrowserRouter>
                 );
         }else {
             return (
                 <BrowserRouter>
-                    <div>
-                        <Navbar signedIn={signedIn} signOut={props.signOut} user={user}/>
-                        <Switch>
-                            <Route exact path={'/'} component={() => <Home signedIn={signedIn} user={user}/>} />
-                            <Route path={'/About'} component={() => <About signedIn={signedIn} user={user}/>} />
-                            <Route path={'/Contact'} component={() => <Contact signedIn={signedIn} user={user}/>} />
-                            <Route path={'/LogIn'} component={() => <LogIn signedIn={signedIn} signIn={props.signIn} user={user} />} />
-                            <Route path={'/Events'} component={ () => <Events signedIn={signedIn} user={user}/>} />
-                            <Route path={'/Planner'} component={ () => <Planner signedIn={signedIn}
-                                                                                user={user} api={url}/>} />
-                            <Route path={'/signedout'} component={ () => <LogOut signedIn={signedIn}/>} />
-                            <Route path={'/NewActivity'} component={() => <AddActivity user={user} signedIn={signedIn} api={url}/>}/>
-                            <Route component={NotFound} />
-                        </Switch>
-                        <Footer/>
-                    </div>
+                   <React.Fragment>
+                       <Navbar signedIn={signedIn} signOut={props.signOut} user={user}/>
+                       <Switch>
+                           <Route exact path={'/'} component={() => <Home signedIn={signedIn} user={user}/>} />
+                           <Route path={'/About'} component={() => <About signedIn={signedIn} user={user}/>} />
+                           <Route path={'/Contact'} component={() => <Contact signedIn={signedIn} user={user}/>} />
+                           <Route path={'/LogIn'} component={() => <LogIn signedIn={signedIn} signIn={props.signIn} user={user} />} />
+                           <Route path={'/Events'} component={ () => <Events signedIn={signedIn} user={user}/>} />
+                           <Route path={'/Planner'} component={ () => <Planner signedIn={signedIn}
+                                                                               user={user} api={url}/>} />
+                           <Route path={'/signedout'} component={ () => <LogOut signedIn={signedIn}/>} />
+                           <Route path={'/NewActivity'} component={() => <AddActivity user={user} signedIn={signedIn} api={url}/>}/>
+                           <Route component={NotFound} />
+                       </Switch>
+                       <Footer/>
+                   </React.Fragment>
                 </BrowserRouter>
             );
         }

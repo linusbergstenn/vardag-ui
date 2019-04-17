@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
 
 import Router from './Routes/Router';
 import axios from 'axios';
@@ -28,7 +27,7 @@ class App extends Component {
             loggedIn: false,
             user: {}
         };
-        this.url = Config.URL.DEV
+        this.url = Config.URL.PUBLISH
     }
 
 
@@ -72,7 +71,8 @@ class App extends Component {
                 password: pass
             }
         }).then((response) => {
-            this.handleLogin(user, response.data.AccountId);
+            console.log('login response: ', response);
+            this.handleLogin(user, response.data.accountId);
         }).catch((error) => {
             console.log(error.response);
             $('.spinner-border').addClass('d-none');
@@ -84,7 +84,7 @@ class App extends Component {
                 }, 2000)
             }
             else {
-                alert('asdasdasd');
+                alert('Server error.')
             }
         });
     };

@@ -10,7 +10,7 @@ const GeneralActivities = (props) => {
     let removeActivity = async (name, id) => {
         console.log('remove activity with id: ', id);
 
-        let cnfrm = window.confirm('Vill du ta bort' + name + '?');
+        let cnfrm = window.confirm('Vill du ta bort ' + name + '?');
 
         if(cnfrm){
 

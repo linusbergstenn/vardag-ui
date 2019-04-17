@@ -14,48 +14,39 @@ const EditGeneralModal = (props) => {
         let data = new FormData();
         data.append('pic' ,image, image.name);
 
-        data.append("accountid", aktivitet.AccountId);
         data.append("activityid", aktivitet.ActivityId);
 
         console.log("data in image: ",data);
 
-        var axiosConfig = {
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'POST, GET, PUT, OPTIONS, DELETE',
-                'Access-Control-Allow-Headers': 'Access-Control-Allow-Methods, Access-Control-Allow-Origin, Origin, Accept, Content-Type',
-                'Accept': 'application/x-www-form-urlencoded',
-                'Content-Type':'application/x-www-form-urlencoded'
-            }
-        };
-
         await axios({
             method: 'post',
             url: url + '/image/UploadImage',
-            data: data,
-            config: axiosConfig
+            data: data
         }).then((response) => {
             console.log('Image response: ', response.data);
-            props.reloadActivities();
         }).catch((error) => {
             console.log('Activity iamge-Error', error);
         });
     };
     let updateActivity = async () => {
+        let data = new FormData();
+        data.append('ActivityId', props.activity.ActivityId);
+        data.append('Name', document.getElementById('Gactivity-name'));
+        data.append('Description', document.getElementById('gactivity-description'));
+
 
         await axios({
             method: 'post',
             url: url + '/GeneralActivity/EditGeneralActivity',
-            params: {
-            }
+            data: data
         }).then((response) => {
             console.log('imageInput: ', document.getElementById('imageInput').value);
             console.log('update acticity: ', response);
             if(choosenFile){
                 addImage(choosenFile);
-            }else{
-                props.reloadActivities();
             }
+        }).then(() => {
+            props.reloadActivities();
         }).catch((error) => {
             console.log('Activity-Error: ', error)
         });
@@ -123,8 +114,8 @@ if(props.activity !== null || props.activity !== undefined){
                     <div className="modal-body">
                         <form>
                             <div className={'form-group'}>
-                                <label htmlFor={'activity-name'}>Namn på aktivitet:</label>
-                                <input id={'activity-name'} defaultValue={aktivitet.Name} type={'text'} className={'form-control'}/>
+                                <label htmlFor={'Gactivity-name'}>Namn på aktivitet:</label>
+                                <input id={'Gactivity-name'} defaultValue={aktivitet.Name} type={'text'} className={'form-control'}/>
                             </div>
                             <div className="input-group d-flex flex-column-reverse">
                                 <div>
@@ -139,12 +130,12 @@ if(props.activity !== null || props.activity !== undefined){
 
                                     <img style={{width: 200 +'px'}} src={imageSrc} alt={'Activity image'}
                                     className={'img-fluid'} id={'imageOutput'}/>
-                                    
+
                                 </div>
                             </div>
                             <div className="form-group">
-                                <label htmlFor="activity-description">Beskrivning</label>
-                                <textarea defaultValue={aktivitet.Description} className="form-control" id="activity-description" rows={'3'}/>
+                                <label htmlFor="gactivity-description">Beskrivning</label>
+                                <textarea defaultValue={aktivitet.Description} className="form-control" id="gactivity-description" rows={'3'}/>
                             </div>
                         </form>
                     </div>

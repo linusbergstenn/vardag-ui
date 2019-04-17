@@ -3,12 +3,6 @@ import axios from "axios";
 
 const SubActivityModal = (props) => {
     console.log('SubModal props', props);
-    console.log('Submodal reload', props.reloadActivities);
-    let suba = {
-        "Name": "Test",
-        "Description": "Test"
-    };
-    let subActivities = [suba];
     let choosenFile;
     let url = props.url;
 
@@ -38,7 +32,7 @@ const SubActivityModal = (props) => {
 
         let a = document.getElementById('add_subactivity-description').value || 'Ingen beskrivning tillagd';
         let data = new FormData();
-        data.append('ActivityId', props.activityId);
+        data.append('ActivityId', props.activity.activityId);
         data.append('Name', document.getElementById('add_subactivity-name').value);
         data.append('Text', document.getElementById('add_subactivity-description').value);
         data.append('Sort', 5);
@@ -48,11 +42,11 @@ const SubActivityModal = (props) => {
             data:data
         }).then((response) => {
             console.log('add subactivity response: ', response.data);
-            /*if(choosenFile){
+            if(choosenFile){
                 addImage(choosenFile, response.data[0].ActivityId);
-            }*/
+            }
         }).then( ()=>{
-            props.reloadActivities(props.user);
+            props.reloadActivities();
             document.getElementById('add_subactivity-name').value = '';
             document.getElementById('add_subactivity-description').value = '';
         }).catch((error) => {
@@ -76,14 +70,6 @@ const SubActivityModal = (props) => {
         }
     };
 
-    let maxEnergy = 10;
-    let optionsArray = [];
-    for(let i = 0; i < maxEnergy; i++)
-        optionsArray.push(i+1);
-    let options = optionsArray.map ( (option, index) => {
-        return <option key={index}>{option}</option>
-    });
-
     let imageSrc = 'https://www.picsum.photos/200/?random';
     if(props.activity !== null || props.activity !== undefined){
         return(
@@ -92,7 +78,7 @@ const SubActivityModal = (props) => {
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title" id="exampleModalLabel">Lägg till underaktivitet för aktivitet #{props.activityId}</h5>
+                            <h5 className="modal-title" id="exampleModalLabel">Lägg till underaktivitet för aktivitet #{props.activity.activityId}</h5>
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>

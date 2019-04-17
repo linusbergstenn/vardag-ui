@@ -12,15 +12,16 @@ const EditModal = (props) => {
     let choosenFile;
 
     let deleteActivity = async () => {
-     let cnfrm = window.confirm('Vill du ta bort: ' + props.activity.Name +'?');
+     let cnfrm = window.confirm('Vill du ta bort: ' + props.activity.activityName +'?');
 
      if(cnfrm){
+         let endpoint = '/Activity/DeleteActivityWithSubs';
          console.log('confirmed', cnfrm);
          await  axios({
              method: 'post',
-             url: url + '/activity/DeleteActivity',
-             params: {
-                 id: props.activity.ActivityId
+             url: url + endpoint ,
+             data: {
+                 ActivityId: props.activity.activityId
              }
          }).then((response) => {
              props.reloadActivities();
@@ -35,8 +36,8 @@ const EditModal = (props) => {
         let data = new FormData();
         data.append('pic' ,image, image.name);
 
-        data.append("accountid", aktivitet.AccountId);
-        data.append("activityid", aktivitet.ActivityId);
+        data.append("accountid", aktivitet.accountId);
+        data.append("activityid", aktivitet.activityId);
 
         console.log("data in image: ",data);
 
@@ -69,11 +70,11 @@ const EditModal = (props) => {
             url: url + '/activity/EditActivity',
             params: {
                     ActivityId: props.activity.ActivityId,
-                    ActivityName: document.getElementById('activity-name').value || props.activity.Name,
-                    Description: document.getElementById('activity-description').value || props.activity.Description,
-                    TimeStart: document.getElementById('timeStart').value || props.activity.TimeStart,
-                    TimeEnd: document.getElementById('timeEnd').value || props.activity.TimeEnd,
-                    Date: document.getElementById('date').value || props.activity.Date,
+                    ActivityName: document.getElementById('activity-name').value || props.activity.activityName,
+                    Description: document.getElementById('activity-description').value || props.activity.description,
+                    TimeStart: document.getElementById('timeStart').value || props.activity.timeStart,
+                    TimeEnd: document.getElementById('timeEnd').value || props.activity.timeEnd,
+                    Date: document.getElementById('date').value || props.activity.date,
                     Monday: document.getElementById('optionBox0').checked,
                     Tuesday: document.getElementById('optionBox1').checked,
                     Wednesday: document.getElementById('optionBox2').checked,
@@ -81,11 +82,10 @@ const EditModal = (props) => {
                     Friday: document.getElementById('optionBox4').checked,
                     Saturday: document.getElementById('optionBox5').checked,
                     Sunday: document.getElementById('optionBox6').checked,
-                    Energy: document.getElementById('energyOptions').value || props.activity.Energy,
+                    Energy: document.getElementById('energyOptions').value || props.activity.energy,
                     Privat: document.getElementById('permBox0').checked,
                     Hemma: document.getElementById('permBox1').checked,
-                    Skola: document.getElementById('permBox2').checked,
-                    Repeat: props.activity.Repeat
+                    Skola: document.getElementById('permBox2').checked
             }
         }).then((response) => {
             console.log('imageInput: ', document.getElementById('imageInput').value);
@@ -117,14 +117,14 @@ const EditModal = (props) => {
     };
 
     let getImageSrc = () => {
-        console.log('Aktivitet imageId - getimageSrc: ', aktivitet.ImageId);
-      if(aktivitet.ImageId === null || aktivitet.ImageId === undefined ){
+        console.log('Aktivitet imageId - getimageSrc: ', aktivitet.imageId);
+      if(aktivitet.imageId === null || aktivitet.imageId === undefined ){
           console.log('GetImageSrc: har ingen bild');
           return imageSrc = 'https://picsum.photos/200/?random';
 
       }else{
           console.log('GetImageSrc: Aktivitet har en bild');
-          return imageSrc = url + '/image/GetImage?id=' + aktivitet.ImageId;
+          return imageSrc = url + '/image/GetImage?id=' + aktivitet.imageId;
 
       }
     };
@@ -146,7 +146,7 @@ const EditModal = (props) => {
     };
     let weekdayString = ['Mån', 'Tis', 'Ons', 'Tors', 'Fre', 'Lör', 'Sön'];
     let weekdays = weekdayString.map( (day, index) => {
-        let weekday = [aktivitet.Monday, aktivitet.Tuesday, aktivitet.Wednesday, aktivitet.Thursday, aktivitet.Friday, aktivitet.Saturday, aktivitet.Sunday];
+        let weekday = [aktivitet.monday, aktivitet.tuesday, aktivitet.wednesday, aktivitet.thursday, aktivitet.friday, aktivitet.saturday, aktivitet.sunday];
         if(weekday[index] === true){
             return(
                 <div key={index} className="custom-control custom-checkbox custom-control-inline">
@@ -209,7 +209,7 @@ if(props.activity !== null || props.activity !== undefined){
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title" id="exampleModalLabel">Redigera aktivitet: <span className={'text-muted'}>#{aktivitet.ActivityId}</span></h5>
+                        <h5 className="modal-title" id="exampleModalLabel">Redigera aktivitet: <span className={'text-muted'}>#{aktivitet.activityId}</span></h5>
                         <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -218,7 +218,7 @@ if(props.activity !== null || props.activity !== undefined){
                         <form>
                             <div className={'form-group'}>
                                 <label htmlFor={'activity-name'}>Namn på aktivitet:</label>
-                                <input id={'activity-name'} defaultValue={aktivitet.Name} type={'text'} className={'form-control'}/>
+                                <input id={'activity-name'} defaultValue={aktivitet.activityName} type={'text'} className={'form-control'}/>
                             </div>
                             <div className="input-group d-flex flex-column-reverse">
                                 <div>
@@ -234,7 +234,7 @@ if(props.activity !== null || props.activity !== undefined){
                             </div>
                             <div className="form-group">
                                 <label htmlFor="activity-description">Beskrivning</label>
-                                <textarea defaultValue={aktivitet.Description} className="form-control" id="activity-description" rows={'3'}/>
+                                <textarea defaultValue={aktivitet.description} className="form-control" id="activity-description" rows={'3'}/>
                             </div>
                             <div className={'form-group'}>
                                 <label htmlFor="date">Datum för aktivitet: </label>
@@ -243,11 +243,11 @@ if(props.activity !== null || props.activity !== undefined){
                             <div className={'form-group d-flex justify-content-around'}>
                                 <div>
                                     <label htmlFor="timeStart">Aktiviteten start: </label>
-                                    <input className={'form-control'} type={'time'} id={'timeStart'} defaultValue={aktivitet.TimeStart} />
+                                    <input className={'form-control'} type={'time'} id={'timeStart'} defaultValue={aktivitet.timeStart} />
                                 </div>
                                 <div>
                                     <label htmlFor="timeEnd">Aktiviteten slutar: </label>
-                                    <input className={'form-control'} type={'time'} id={'timeEnd'} defaultValue={aktivitet.TimeEnd} />
+                                    <input className={'form-control'} type={'time'} id={'timeEnd'} defaultValue={aktivitet.timeEnd} />
                                 </div>
                             </div>
                             <div className={'form-group'}>
